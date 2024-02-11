@@ -80,12 +80,50 @@ app.UseSwaggerUI(options =>
 Pass the url of CSS or JS file path through the options in UseSwaggerUI middleware
 
 ## Adding Authentication:
+To add Token based authentication add options in Swagger Generator service
+```C#
+builder.Services.AddSwaggerGen(options =>
+{
+    //...
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "bearer"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
+    //...
+});
+
+```
 
 ## Documentation Formatting:
 We can format documentation using couple methods. Such as
 - XML
 - Data Annotations
-
+- ProducesReponseType
+- Produces
+- Consumes
+- Example
+- IOperationFilter
+- Custom Attribute
 
 
 
